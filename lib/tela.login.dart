@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:platinumbetss/dashboard.dart';
 import 'package:platinumbetss/recuperacao.senha.dart';
 import 'package:platinumbetss/tela.cadastro.dart';
 
@@ -192,7 +193,12 @@ class _TelaLoginState extends State<TelaLogin> {
                             "Entrar",
                             style: TextStyle(fontSize: 20.0, color: Colors.white),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                  builder: (context) => Dashboard(),
+                                ));
+                          },
                           color: Colors.blue[800],
 
                         ),
