@@ -40,7 +40,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 child: Text(
                   "Seja bem vindo(a)",
                   style: TextStyle(color: Colors.white,
-                  fontSize: 20.0),
+                  fontSize: 30.0),
 
                 ),
               ),
@@ -54,6 +54,10 @@ class _TelaLoginState extends State<TelaLogin> {
                         fontSize: 17.0)
                 ),
               ),
+              SizedBox(
+                height: 20.0,
+              ),
+
               Container(
                 child: Text(
                     "(CPF ou E-mail)",
