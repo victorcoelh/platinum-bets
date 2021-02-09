@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:platinumbetss/sidebar.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -6,6 +7,10 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  bool _buttonFavorite = false;
+  bool _buttonLast = false;
+  double _sizeFavorite = 500.0;
+  double _sizeLast = 500.0;
   List<String> _lista = [
     "Atlanta Hawks",
     "Milwaukee Bucks",
@@ -34,10 +39,10 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+        /*leading: IconButton(
           icon: Icon(Icons.menu, size: 32,),
           onPressed: () {},
-        ),
+        ),*/
         title: Text("Dashboard"),
         centerTitle: true,
         actions: [
@@ -47,6 +52,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
       ),
+      drawer: Sidebar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -96,11 +102,11 @@ class _DashboardState extends State<Dashboard> {
             Column(
               children: [
                 AppBar(
-                  title: Text("Últimas apostas"),
+                  title: Text("Times Favoritos"),
                   centerTitle: true,
                 ),
                 Container(
-                  height: 500.0,
+                  height: _sizeFavorite,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _lista.length,
@@ -113,7 +119,9 @@ class _DashboardState extends State<Dashboard> {
                               leading: Icon(Icons.account_box_rounded),
                               trailing: IconButton(
                                 icon: Icon(Icons.more_vert),
-                                onPressed: () {},
+                                onPressed: () {
+
+                                },
                               )),
                           Divider()
                         ]);
@@ -125,7 +133,9 @@ class _DashboardState extends State<Dashboard> {
                   child: RaisedButton(
                     color: Colors.teal[200],
                     child: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () {},
+                    onPressed: () {
+                      _buttonFavorite = true;
+                    },
                   ),
                 )
               ],
@@ -137,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
                   centerTitle: true,
                 ),
                 Container(
-                  height: 500.0,
+                  height: _sizeLast,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _lista.length,
@@ -147,8 +157,7 @@ class _DashboardState extends State<Dashboard> {
                           ListTile(
                               title: Text(_listadois[index]),
                               subtitle: Text("adiado"),
-                              trailing: Text("acerto")
-                          ),
+                              trailing: Text("acerto")),
                           Divider()
                         ]);
                       }),

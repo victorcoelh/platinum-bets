@@ -53,6 +53,7 @@ flutter:
   assets:
     - assets/imagens/comemorar.jpg
     - assets/imagens/FundoLogin.jpg
+    - assets/imagens/Gigachad.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
