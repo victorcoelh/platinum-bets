@@ -224,8 +224,6 @@ class _TelaLoginState extends State<TelaLogin> {
                             bottomRight:Radius.circular(20),
                           ),
                         ),
-
-
                         child: FlatButton(
                           child: Text(
                             "Registrar",
