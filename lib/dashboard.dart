@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:platinumbetss/sidebar.dart';
+import 'package:platinumbetss/favoritos.dart';
+import 'ultimas.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -7,10 +9,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  bool _buttonFavorite = false;
-  bool _buttonLast = false;
-  double _sizeFavorite = 500.0;
-  double _sizeLast = 500.0;
   List<String> _lista = [
     "Atlanta Hawks",
     "Milwaukee Bucks",
@@ -92,7 +90,8 @@ class _DashboardState extends State<Dashboard> {
                       height: 50.0,
                       child: RaisedButton(
                           color: Colors.teal[200],
-                          onPressed: () {},
+                          onPressed: () {
+                          },
                           child: Text("APOSTA RÁPIDA")),
                     )
                   ],
@@ -106,7 +105,7 @@ class _DashboardState extends State<Dashboard> {
                   centerTitle: true,
                 ),
                 Container(
-                  height: _sizeFavorite,
+                  height: 500.0,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _lista.length,
@@ -119,9 +118,7 @@ class _DashboardState extends State<Dashboard> {
                               leading: Icon(Icons.account_box_rounded),
                               trailing: IconButton(
                                 icon: Icon(Icons.more_vert),
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                               )),
                           Divider()
                         ]);
@@ -134,7 +131,11 @@ class _DashboardState extends State<Dashboard> {
                     color: Colors.teal[200],
                     child: Icon(Icons.keyboard_arrow_down),
                     onPressed: () {
-                      _buttonFavorite = true;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Favoritos(),
+                          ));
                     },
                   ),
                 )
@@ -147,7 +148,7 @@ class _DashboardState extends State<Dashboard> {
                   centerTitle: true,
                 ),
                 Container(
-                  height: _sizeLast,
+                  height: 500.0,
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: _lista.length,
@@ -168,7 +169,11 @@ class _DashboardState extends State<Dashboard> {
                   child: RaisedButton(
                     color: Colors.teal[200],
                     child: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () {},
+                    onPressed: () {Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Ultimas(),
+                        ));},
                   ),
                 )
               ],
