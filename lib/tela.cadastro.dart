@@ -14,6 +14,7 @@ class TelaCadastro extends StatefulWidget {
 
 class _TelaCadastroState extends State<TelaCadastro> {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final _nomeController = TextEditingController();
   final _emailController = TextEditingController();
@@ -24,10 +25,21 @@ class _TelaCadastroState extends State<TelaCadastro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
         builder: (context,child, model){
           if(model.Isloading)
-            return Center(child: CircularProgressIndicator(),);
+            return Stack(
+              children: [
+                Image.asset(
+                  "assets/imagens/FundoLogin.jpg",
+                  fit: BoxFit.cover,
+                  height: 1000.0,
+
+                ),
+                Center(child: CircularProgressIndicator(),)
+              ],
+            );
           return SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -100,12 +112,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
 
-                              hintText: "    Email",
+                              hintText: "Email",
                               hintStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18.0
                               )
                           ),
+                          textAlign: TextAlign.center,
                           validator: (text){
                             if(text.isEmpty)
                               return "Email Inválido" ;
@@ -139,10 +152,11 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           validator: (text){
                             if(text.isEmpty) return "Senha Inválida" ;
                           },
+                          textAlign: TextAlign.center,
                           obscureText: true,
                           decoration: InputDecoration(
 
-                              hintText: "    Senha",
+                              hintText: "Senha",
                               hintStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18.0
@@ -175,12 +189,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
 
-                              hintText: "    CPF",
+                              hintText: "CPF",
                              hintStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18.0
                               ),
                           ),
+                          textAlign: TextAlign.center,
                           validator: (text){
                             if(text.isEmpty) return "CPF Inválido" ;
                           },
@@ -211,12 +226,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
 
-                              hintText: "    Nome",
+                              hintText: "Nome",
                               hintStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18.0
                               )
                           ),
+                          textAlign: TextAlign.center,
 
                           validator: (text){
                             if(text.isEmpty) return "Nome inválido";
@@ -248,12 +264,13 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
 
-                              hintText: "    Sobrenome",
+                              hintText: "Sobrenome",
                               hintStyle: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18.0
                               )
                           ),
+                          textAlign: TextAlign.center,
                           validator: (text){
                             if(text.isEmpty) return "Sobrenome Inválido" ;
                           },
@@ -334,12 +351,18 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   }
   void _onSuccess(){
-
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context)=>RegistroFinal())
+    );
 
   }
 
   void _onFail(){
-
+    _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text("Falha ao criar sua conta!"),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
+        ));
 
   }
 }
