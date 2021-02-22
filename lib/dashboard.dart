@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:platinumbetss/sidebar.dart';
 import 'package:platinumbetss/favoritos.dart';
 import 'ultimas.dart';
+import 'apostas.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -91,6 +92,11 @@ class _DashboardState extends State<Dashboard> {
                       child: RaisedButton(
                           color: Colors.teal[200],
                           onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Apostas(),
+                                ));
                           },
                           child: Text("APOSTA RÁPIDA")),
                     )
