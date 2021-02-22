@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:platinumbetss/tela.login.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'modelos/user_model.dart';
 
 class Sidebar extends StatefulWidget {
   @override
@@ -87,14 +91,34 @@ class _SidebarState extends State<Sidebar> {
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 10.0),
-                child: Row(
-                  children: [
-                    IconButton(icon: Icon(Icons.logout), onPressed: null),
-                    Text(
-                      "Logout",
-                      style: TextStyle(fontSize: 20.0),
-                    )
-                  ],
+                child: ScopedModelDescendant<UserModel>(
+                  builder: (context, child, model){
+                    return Row(
+                      children: [
+                        IconButton(icon: Icon(Icons.logout), onPressed:(){
+                          model.Sair();
+
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context)=>TelaLogin())
+                          );
+                        }),
+                        FlatButton(
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(fontSize: 20.0),
+                          ),
+                            onPressed:(){
+                              model.Sair();
+
+
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context)=>TelaLogin())
+                              );
+                            }
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
               Padding(

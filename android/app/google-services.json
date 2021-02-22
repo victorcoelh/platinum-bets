@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "75809047753",
+    "project_id": "platinum-bets-9440c",
+    "storage_bucket": "platinum-bets-9440c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75809047753:android:d0fc979111b83e5fabb918",
+        "android_client_info": {
+          "package_name": "com.projetosifce.platinumbetss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75809047753-29icp3brc69qapdk9ksf980gnqt5k0li.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5aigk4Lk9bWx-6Iniaru759QDKtc01Sg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75809047753-29icp3brc69qapdk9ksf980gnqt5k0li.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -23,7 +23,7 @@ class _RegistroFinalState extends State<RegistroFinal> {
 
 
           ),
-          height: 760.0,
+          height: 860.0,
 
 
           padding: EdgeInsets.only(top: 60, left: 40, right:40,),
