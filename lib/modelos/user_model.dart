@@ -24,19 +24,19 @@ class UserModel extends Model{
 
   }
 
-  void Cadastrar({ @required Map<String, dynamic> userData, @required String pass,  @required VoidCallback onSucess, @required VoidCallback onFail} ){
+  void Cadastrar({ @required Map<String, dynamic> userData, @required String pass,  @required VoidCallback onSuccess, @required VoidCallback onFail} ){
 
     Isloading = true;
     notifyListeners();
     _auth.createUserWithEmailAndPassword(
         email: userData["email"],
         password: pass).then((user) async{
-          firebaseUser = user as FirebaseUser;
+          firebaseUser = user;
 
 
          await _saveUserData(userData);
 
-          onSucess();
+          onSuccess();
           Isloading = false;
           notifyListeners();
 
