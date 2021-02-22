@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   path_provider: ^1.1.0
   http: ^0.12.2
+  icon_shadow: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,10 @@ flutter:
     - assets/imagens/comemorar.jpg
     - assets/imagens/FundoLogin.jpg
     - assets/imagens/Gigachad.jpg
+    - assets/imagens/times/nba/Atlanta-Hawks.png
+    - assets/imagens/times/nba/Denver-Nuggets.png
+    - assets/imagens/Quadra.jpg
+    - assets/imagens/DegradePerfil.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

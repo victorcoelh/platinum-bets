@@ -27,11 +27,21 @@ class _SidebarState extends State<Sidebar> {
         children: [
           SizedBox(
               height: 250.0,
-              child: Image.asset(
-                "assets/imagens/Gigachad.jpg",
-                fit: BoxFit.cover,
-                width: double.infinity,
-                alignment: Alignment.topCenter,
+              child: Stack(
+                children: [
+                  Image.asset(
+                    "assets/imagens/Gigachad.jpg",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    alignment: Alignment.topCenter,
+                  ),
+                  Image.asset(
+                    "assets/imagens/DegradePerfil.png",
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    alignment: Alignment.topCenter,
+                  ),
+                ],
               )),
           Container(
             height: 40.0,
