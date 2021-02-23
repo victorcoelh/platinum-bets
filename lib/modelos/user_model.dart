@@ -5,6 +5,7 @@ import 'package:platinumbetss/tela.login.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:platinumbetss/info.dart';
 
 
 
@@ -24,6 +25,8 @@ class UserModel extends Model{
     _auth.signInWithEmailAndPassword(email: email, password: pass).then(
          (user)async{
            firebaseUser = user;
+           TeamData.getNames();
+           TeamData.getLogos();
 
            await _loadCurrentUser();
            onSuccess();

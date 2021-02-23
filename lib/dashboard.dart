@@ -14,29 +14,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<String> _lista = [
-    "Atlanta Hawks",
-    "Milwaukee Bucks",
-    "Brooklyn Nets",
-    "Los Angeles Lakers",
-    "Golden State Warriors",
-    "Philadelphia 76ers",
-    "Miami Heat",
-    "Dallas Mavericks",
-    "Houston Rockets"
-  ];
-
-  List<String> _listadois = [
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-  ];
 
   DocumentSnapshot partidas;
   QuerySnapshot time1;
@@ -70,12 +47,13 @@ class _DashboardState extends State<Dashboard> {
         .collection("esportes")
         .document("basquete")
         .collection("nba")
-        .document("partidas").snapshots()
+        .document("partidas")
+        .snapshots()
         .listen((event) {
-          filtro1 = event['confrontos'][i - 1];
-          filtro2 = event['confrontos'][i];
-          print(filtro1);
-          print(filtro2);
+      filtro1 = event['confrontos'][i - 1];
+      filtro2 = event['confrontos'][i];
+      print(filtro1);
+      print(filtro2);
     });
   }
 
@@ -108,17 +86,7 @@ class _DashboardState extends State<Dashboard> {
               IconButton(
                 icon: Icon(Icons.refresh, size: 32),
                 onPressed: () {
-                  /* Firestore.instance
-                  .collection('esportes')
-                  .document('basquete')
-                  .collection('nba')
-                  .document('atlhawks')
-                  .updateData({'nextMatch': 'Cleveland Cavaliers'}); */
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Apostas(),
-                  ));
+                  model.DataUpdate();
                 },
               ),
             ],
@@ -185,23 +153,50 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Container(
                       height: 500.0,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _lista.length,
-                          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-                          itemBuilder: (context, index) {
-                            return Column(children: [
-                              ListTile(
-                                  title: Text(_lista[index]),
-                                  subtitle: Text("adiado"),
-                                  leading: Icon(Icons.account_box_rounded),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.more_vert),
-                                    onPressed: () {},
-                                  )),
-                              Divider()
-                            ]);
-                          }),
+                      child: StreamBuilder(
+                        stream: Firestore.instance
+                            .collection('users')
+                            .document(model.firebaseUser.uid)
+                            .collection('favoritos')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data.documents.length,
+                                padding:
+                                    EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+                                itemBuilder: (context, index) {
+                                  return Column(children: [
+                                    ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 0.0, horizontal: 0.0),
+                                      title: Text(snapshot.data.documents[index]
+                                          ['nome']),
+                                      subtitle: Text(snapshot
+                                          .data.documents[index]['NextMatch']),
+                                      trailing: SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: Container()),
+                                      leading: SizedBox(
+                                        height: 80,
+                                        width: 80,
+                                        child: Image.asset(
+                                          snapshot.data.documents[index]
+                                              ['logo'],
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                      ),
+                                    ),
+                                    Divider()
+                                  ]);
+                                });
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 40.0,
@@ -228,19 +223,40 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     Container(
                       height: 500.0,
-                      child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: _lista.length,
-                          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-                          itemBuilder: (context, index) {
-                            return Column(children: [
-                              ListTile(
-                                  title: Text(_listadois[index]),
-                                  subtitle: Text("adiado"),
-                                  trailing: Text("acerto")),
-                              Divider()
-                            ]);
-                          }),
+                      child: StreamBuilder(
+                        stream: Firestore.instance
+                            .collection('users')
+                            .document(model.firebaseUser.uid)
+                            .collection('apostas')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                itemCount: snapshot.data.documents.length,
+                                padding:
+                                    EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+                                itemBuilder: (context, index) {
+                                  return Column(children: [
+                                    ListTile(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 0.0, horizontal: 10.0),
+                                      title: Text(snapshot.data.documents[index]
+                                          ['time']),
+                                      subtitle: Text(snapshot
+                                          .data.documents[index]['oponente']),
+                                      trailing: Text(
+                                        'R\$${snapshot.data.documents[index]['valor']}',
+                                        style: TextStyle(fontSize: 18.0),
+                                      ),
+                                    ),
+                                    Divider()
+                                  ]);
+                                });
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 40.0,

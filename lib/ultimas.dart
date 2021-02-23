@@ -3,6 +3,7 @@ import 'dashboard.dart';
 import 'sidebar.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:platinumbetss/modelos/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Ultimas extends StatefulWidget {
   @override
@@ -10,29 +11,7 @@ class Ultimas extends StatefulWidget {
 }
 
 class _UltimasState extends State<Ultimas> {
-  List<String> _lista = [
-    "Atlanta Hawks",
-    "Milwaukee Bucks",
-    "Brooklyn Nets",
-    "Los Angeles Lakers",
-    "Golden State Warriors",
-    "Philadelphia 76ers",
-    "Miami Heat",
-    "Dallas Mavericks",
-    "Houston Rockets"
-  ];
 
-  List<String> _listadois = [
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-    "Jogo",
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -60,20 +39,36 @@ class _UltimasState extends State<Ultimas> {
           body: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _lista.length,
-                    padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-                    itemBuilder: (context, index) {
-                      return Column(children: [
-                        ListTile(
-                            title: Text(_listadois[index]),
-                            subtitle: Text("adiado"),
-                            trailing: Text("acerto")),
-                        Divider()
-                      ]);
-                    }),
-              ),
+                  child: StreamBuilder(
+                    stream: Firestore.instance
+                        .collection('users')
+                        .document(model.firebaseUser.uid)
+                        .collection('apostas')
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            itemCount: snapshot.data.documents.length,
+                            padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+                            itemBuilder: (context, index) {
+                              return Column(children: [
+                                ListTile(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+                                  title:
+                                  Text(snapshot.data.documents[index]['time']),
+                                  subtitle: Text(
+                                      snapshot.data.documents[index]['oponente']),
+                                  trailing: Text('R\$${snapshot.data.documents[index]['valor']}',
+                                  style: TextStyle(fontSize: 18.0),),
+                                ),
+                                Divider()
+                              ]);
+                            });
+                      } else {
+                        return Container();
+                      }
+                    },
+                  )),
               SizedBox(
                 height: 40.0,
                 width: double.infinity,

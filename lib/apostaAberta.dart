@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:platinumbetss/modelos/user_model.dart';
 import 'info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ApostaAberta extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class ApostaAberta extends StatefulWidget {
 class _ApostaAbertaState extends State<ApostaAberta> {
   TextStyle estilot = TextStyle(fontSize: 28.0);
   TextStyle estilob = TextStyle(fontSize: 20.0);
+  TextEditingController controlePreco = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +75,9 @@ class _ApostaAbertaState extends State<ApostaAberta> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text("0.4", style: estilot),
-                  Text("0.2", style: estilot),
-                  Text("0.4", style: estilot)
+                  Text("0.8", style: estilot),
+                  Text("0.0", style: estilot),
+                  Text("0.2", style: estilot)
                 ],
               )
             ],
@@ -82,15 +85,146 @@ class _ApostaAbertaState extends State<ApostaAberta> {
         ),
         actions: [
           FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Escolha o valor da aposta"),
+                      content: SizedBox(
+                          height: 100,
+                          child: Column(
+                            children: [
+                              Text("Odds: 80%, payout: 20%"),
+                              TextField(
+                                controller: controlePreco,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(prefixText: "R\$"),
+                              )
+                            ],
+                          )),
+                      actions: [
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancelar")),
+                        FlatButton(
+                            onPressed: () {
+                              int novoSaldo = model.userData['saldo'] -
+                                  int.parse(controlePreco.text);
+                              if (novoSaldo < 0) {
+                                showFailDialog("Saldo insuficiente");
+                              } else {
+                                Firestore.instance
+                                    .collection("users")
+                                    .document(model.firebaseUser.uid)
+                                    .updateData({'saldo': (novoSaldo)});
+                                Firestore.instance
+                                    .collection("users")
+                                    .document(model.firebaseUser.uid)
+                                    .collection('apostas')
+                                    .add({
+                                  'valor' : controlePreco.text,
+                                  'time' : TeamData.nomes[TeamData.ind * 2],
+                                  'oponente' : TeamData.nomes[TeamData.ind * 2 + 1],
+                                  'payout' : 1.2
+                                });
+                                model.DataUpdate();
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: Text("Confirmar"))
+                      ],
+                    );
+                  },
+                );
+              },
               child: Text(
                 "Casa",
                 style: estilob,
               )),
-          FlatButton(onPressed: () {}, child: Text("Empate", style: estilob)),
-          FlatButton(onPressed: () {}, child: Text("Fora", style: estilob))
+          FlatButton(
+            child: Text("Empate", style: estilob),
+            onPressed: () {
+              showFailDialog("Opção indisponível nesta liga");
+            },
+          ),
+          FlatButton(onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Escolha o valor da aposta"),
+                  content: SizedBox(
+                      height: 100,
+                      child: Column(
+                        children: [
+                          Text("Odds: 20%, payout: 80%"),
+                          TextField(
+                            controller: controlePreco,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(prefixText: "R\$"),
+                          )
+                        ],
+                      )),
+                  actions: [
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text("Cancelar")),
+                    FlatButton(
+                        onPressed: () {
+                          int novoSaldo = model.userData['saldo'] -
+                              int.parse(controlePreco.text);
+                          if (novoSaldo < 0) {
+                            showFailDialog("Saldo insuficiente");
+                          } else {
+                            Firestore.instance
+                                .collection("users")
+                                .document(model.firebaseUser.uid)
+                                .updateData({'saldo': (novoSaldo)});
+                            Firestore.instance
+                                .collection("users")
+                                .document(model.firebaseUser.uid)
+                                .collection('apostas')
+                                .add({
+                              'valor' : controlePreco.text,
+                              'time' : TeamData.nomes[TeamData.ind * 2 + 1],
+                              'oponente' : TeamData.nomes[TeamData.ind * 2],
+                              'payout' : 1.2
+                            });
+                            model.DataUpdate();
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: Text("Confirmar"))
+                  ],
+                );
+              },
+            );
+          }, child: Text("Fora", style: estilob))
         ],
       );
     });
+  }
+
+  void showFailDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(message),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Ok"))
+          ],
+        );
+      },
+    );
   }
 }
