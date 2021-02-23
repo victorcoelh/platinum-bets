@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'apostaAberta.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'info.dart';
 
 class Apostas extends StatefulWidget {
   @override
@@ -10,12 +11,8 @@ class Apostas extends StatefulWidget {
 }
 
 class _ApostasState extends State<Apostas> {
-  DocumentSnapshot partidas;
-  String logo1;
-  String logo2;
-  String filtro1;
-  String filtro2;
-  int size = 2;
+  /*DocumentSnapshot partidas;
+  int size = 3;
   List<String> nomes;
   List<String> logos;
 
@@ -50,7 +47,7 @@ class _ApostasState extends State<Apostas> {
         print(nomes[i]);
       }
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +62,7 @@ class _ApostasState extends State<Apostas> {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh, size: 32),
-              onPressed: () {
-              },
+              onPressed: () {},
             ),
           ],
         ),
@@ -76,82 +72,88 @@ class _ApostasState extends State<Apostas> {
           height: double.infinity,
           width: double.infinity,
           child: ListView.builder(
-              itemCount: (size / 2).ceil(),
+              itemCount: (TeamData.size / 2).ceil(),
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
               itemBuilder: (context, index) {
-                getNames();
-                getLogos();
+                TeamData.getNames();
+                TeamData.getLogos();
                 return Card(
-                        color: Colors.blueGrey[50],
-                        margin: EdgeInsets.symmetric(
-                            vertical: 4.0, horizontal: 2.5),
-                        child: InkWell(
-                            splashColor: Colors.blue[800].withAlpha(30),
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return ApostaAberta();
-                                },
-                              );
-                            },
-                            child: Stack(
-                              children: [
-                                Opacity(
-                                  opacity: 0.7,
-                                  child: Image.asset(
-                                    "assets/imagens/Quadra.jpg",
-                                    fit: BoxFit.cover,
-                                    height: 100.0,
-                                  ),
+                    color: Colors.blueGrey[50],
+                    margin:
+                        EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.5),
+                    child: InkWell(
+                      splashColor: Colors.blue[800].withAlpha(30),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            TeamData.ind = index;
+                            return ApostaAberta();
+                          },
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Stack(
+                            children: [
+                              Opacity(
+                                opacity: 0.7,
+                                child: Image.asset(
+                                  "assets/imagens/Quadra.jpg",
+                                  fit: BoxFit.cover,
+                                  height: 100.0,
                                 ),
-                                Row(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          height: 85,
-                                          width: 85,
-                                          child: Image.asset(
-                                            '${logos[index * 2]}',
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 85,
-                                          width: 85,
-                                          child: Image.asset(
-                                            '${logos[index * 2 + 1]}',
-                                            fit: BoxFit.fill,
-                                          ),
-                                        ),
-                                      ],
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(
+                                    height: 85,
+                                    width: 85,
+                                    child: Image.asset(
+                                      '${TeamData.logos[index * 2]}',
+                                      fit: BoxFit.fill,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(
-                                          30.0, 10.0, 0.0, 5.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "${nomes[index * 2]}\nx ${nomes[index * 2 + 1]}",
-                                            style: TextStyle(fontSize: 18.0),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Divider(
-                                            color: Colors.transparent,
-                                          ),
-                                          Text("H: 80% | E: 0% | A: 20%",
-                                              style: TextStyle())
-                                        ],
-                                      ),
-                                    )
+                                  ),
+                                  SizedBox(
+                                    height: 85,
+                                    width: 85,
+                                    child: Image.asset(
+                                      '${TeamData.logos[index * 2 + 1]}',
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          //Padding(padding: EdgeInsets.only(left: 0.0)),
+                          Expanded(child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${TeamData.nomes[index * 2]}\n${TeamData.nomes[index * 2 + 1]}",
+                                      style: TextStyle(fontSize: 16.0),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Divider(
+                                      color: Colors.transparent,
+                                    ),
+                                    Text("H: 80% | E: 0% | A: 20%",
+                                        style: TextStyle())
                                   ],
-                                )
-                              ],
-                            ))
-                );
+                                ),
+                              )
+                            ],
+                          )
+                          )],
+                      ),
+                    ));
               }),
         ));
   }
