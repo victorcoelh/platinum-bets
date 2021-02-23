@@ -6,6 +6,7 @@ import 'apostas.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'modelos/user_model.dart';
+import 'apostaRapida.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -37,6 +38,47 @@ class _DashboardState extends State<Dashboard> {
     "Jogo",
   ];
 
+  DocumentSnapshot partidas;
+  QuerySnapshot time1;
+  QuerySnapshot time2;
+  String filtro1;
+  String filtro2;
+
+  void getTeams(String filtro1, String filtro2) async {
+    Firestore.instance
+        .collection('esportes')
+        .document('basquete')
+        .collection('nba')
+        .where('nome', isEqualTo: filtro1)
+        .snapshots()
+        .listen((event) {
+      print(event.documents[0]['logo']);
+    });
+    Firestore.instance
+        .collection('esportes')
+        .document('basquete')
+        .collection('nba')
+        .where('nome', isEqualTo: filtro2)
+        .snapshots()
+        .listen((event) {
+      print(event.documents[0]['logo']);
+    });
+  }
+
+  void getPartidas(int i) async {
+    Firestore.instance
+        .collection("esportes")
+        .document("basquete")
+        .collection("nba")
+        .document("partidas").snapshots()
+        .listen((event) {
+          filtro1 = event['confrontos'][i - 1];
+          filtro2 = event['confrontos'][i];
+          print(filtro1);
+          print(filtro2);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
@@ -55,165 +97,171 @@ class _DashboardState extends State<Dashboard> {
         );
 
       return Scaffold(
-      appBar: AppBar(
-        /*leading: IconButton(
+          appBar: AppBar(
+            /*leading: IconButton(
           icon: Icon(Icons.menu, size: 32,),
           onPressed: () {},
         ),*/
-        title: Text("Dashboard"),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh, size: 32),
-            onPressed: () {
-              Firestore.instance
+            title: Text("Dashboard"),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.refresh, size: 32),
+                onPressed: () {
+                  /* Firestore.instance
                   .collection('esportes')
                   .document('basquete')
                   .collection('nba')
                   .document('atlhawks')
-                  .updateData({'nextMatch': 'Cleveland Cavaliers'});
-
-              model.DataUpdate();
-            },
+                  .updateData({'nextMatch': 'Cleveland Cavaliers'}); */
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Apostas(),
+                  ));
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-      drawer: Sidebar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
+          drawer: Sidebar(),
+          body: SingleChildScrollView(
+            child: Column(
               children: [
-                Image.asset(
-                  "assets/imagens/comemorar.jpg",
-                  fit: BoxFit.cover,
-                  height: 400.0,
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/imagens/comemorar.jpg",
+                      fit: BoxFit.cover,
+                      height: 400.0,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Bem-vindo\nnovamente,\nusuário",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 36.0,
+                              fontWeight: FontWeight.normal,
+                              shadows: [
+                                Shadow(
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 3.0,
+                                  color: Colors.black38,
+                                )
+                              ]),
+                        ),
+                        Divider(
+                          thickness: 15,
+                          color: Colors.transparent,
+                        ),
+                        SizedBox(
+                          width: 200.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                              color: Colors.teal[200],
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ApostaRapida();
+                                  },
+                                );
+                              },
+                              child: Text("APOSTA RÁPIDA")),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "Bem-vindo\nnovamente,\nusuário",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 36.0,
-                          fontWeight: FontWeight.normal,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(0.0, 2.0),
-                              blurRadius: 3.0,
-                              color: Colors.black38,
-                            )
-                          ]),
+                    AppBar(
+                      title: Text("Times Favoritos"),
+                      centerTitle: true,
                     ),
-                    Divider(
-                      thickness: 15,
-                      color: Colors.transparent,
+                    Container(
+                      height: 500.0,
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _lista.length,
+                          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+                          itemBuilder: (context, index) {
+                            return Column(children: [
+                              ListTile(
+                                  title: Text(_lista[index]),
+                                  subtitle: Text("adiado"),
+                                  leading: Icon(Icons.account_box_rounded),
+                                  trailing: IconButton(
+                                    icon: Icon(Icons.more_vert),
+                                    onPressed: () {},
+                                  )),
+                              Divider()
+                            ]);
+                          }),
                     ),
                     SizedBox(
-                      width: 200.0,
-                      height: 50.0,
+                      height: 40.0,
+                      width: double.infinity,
                       child: RaisedButton(
-                          color: Colors.teal[200],
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Apostas(),
-                                ));
-                          },
-                          child: Text("APOSTA RÁPIDA")),
+                        color: Colors.teal[200],
+                        child: Icon(Icons.keyboard_arrow_down),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Favoritos(),
+                              ));
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    AppBar(
+                      title: Text("Últimas apostas"),
+                      centerTitle: true,
+                    ),
+                    Container(
+                      height: 500.0,
+                      child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _lista.length,
+                          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+                          itemBuilder: (context, index) {
+                            return Column(children: [
+                              ListTile(
+                                  title: Text(_listadois[index]),
+                                  subtitle: Text("adiado"),
+                                  trailing: Text("acerto")),
+                              Divider()
+                            ]);
+                          }),
+                    ),
+                    SizedBox(
+                      height: 40.0,
+                      width: double.infinity,
+                      child: RaisedButton(
+                        color: Colors.teal[200],
+                        child: Icon(Icons.keyboard_arrow_down),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Ultimas(),
+                              ));
+                        },
+                      ),
                     )
                   ],
                 ),
               ],
             ),
-            Column(
-              children: [
-                AppBar(
-                  title: Text("Times Favoritos"),
-                  centerTitle: true,
-                ),
-                Container(
-                  height: 500.0,
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _lista.length,
-                      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-                      itemBuilder: (context, index) {
-                        return Column(children: [
-                          ListTile(
-                              title: Text(_lista[index]),
-                              subtitle: Text("adiado"),
-                              leading: Icon(Icons.account_box_rounded),
-                              trailing: IconButton(
-                                icon: Icon(Icons.more_vert),
-                                onPressed: () {},
-                              )),
-                          Divider()
-                        ]);
-                      }),
-                ),
-                SizedBox(
-                  height: 40.0,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    color: Colors.teal[200],
-                    child: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Favoritos(),
-                          ));
-                    },
-                  ),
-                )
-              ],
-            ),
-            Column(
-              children: [
-                AppBar(
-                  title: Text("Últimas apostas"),
-                  centerTitle: true,
-                ),
-                Container(
-                  height: 500.0,
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _lista.length,
-                      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
-                      itemBuilder: (context, index) {
-                        return Column(children: [
-                          ListTile(
-                              title: Text(_listadois[index]),
-                              subtitle: Text("adiado"),
-                              trailing: Text("acerto")),
-                          Divider()
-                        ]);
-                      }),
-                ),
-                SizedBox(
-                  height: 40.0,
-                  width: double.infinity,
-                  child: RaisedButton(
-                    color: Colors.teal[200],
-                    child: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () {Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Ultimas(),
-                        ));},
-                  ),
-                )
-              ],
-            ),
-          ],
-        ),
-      ));
+          ));
     });
   }
 }

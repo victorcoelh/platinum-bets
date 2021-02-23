@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'sidebar.dart';
 import 'apostaAberta.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Apostas extends StatefulWidget {
   @override
@@ -9,6 +10,48 @@ class Apostas extends StatefulWidget {
 }
 
 class _ApostasState extends State<Apostas> {
+  DocumentSnapshot partidas;
+  String logo1;
+  String logo2;
+  String filtro1;
+  String filtro2;
+  int size = 2;
+  List<String> nomes;
+  List<String> logos;
+
+  void getLogos() async {
+    for (int i = 0; i < size; i++) {
+      Firestore.instance
+          .collection('esportes')
+          .document('basquete')
+          .collection('nba')
+          .where('nome', isEqualTo: nomes[i])
+          .snapshots()
+          .listen((event) {
+        logos[i] = event.documents[0]['logo'];
+        print(logos[i]);
+      });
+    }
+  }
+
+  void getNames() async {
+    Firestore.instance
+        .collection("esportes")
+        .document("basquete")
+        .collection("nba")
+        .document("partidas")
+        .snapshots()
+        .listen((event) {
+      size = event['confrontos'].length;
+      nomes = new List<String>(size);
+      logos = new List<String>(size);
+      for(int i = 0; i < size; i++){
+        nomes[i] = event['confrontos'][i];
+        print(nomes[i]);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +65,8 @@ class _ApostasState extends State<Apostas> {
           actions: [
             IconButton(
               icon: Icon(Icons.refresh, size: 32),
-              onPressed: () {},
+              onPressed: () {
+              },
             ),
           ],
         ),
@@ -32,13 +76,13 @@ class _ApostasState extends State<Apostas> {
           height: double.infinity,
           width: double.infinity,
           child: ListView.builder(
-              itemCount: 20,
+              itemCount: (size / 2).ceil(),
               padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Card(
-                      color: Colors.blueGrey[50],
+                getNames();
+                getLogos();
+                return Card(
+                        color: Colors.blueGrey[50],
                         margin: EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 2.5),
                         child: InkWell(
@@ -55,9 +99,11 @@ class _ApostasState extends State<Apostas> {
                               children: [
                                 Opacity(
                                   opacity: 0.7,
-                                  child: Image.asset("assets/imagens/Quadra.jpg",
+                                  child: Image.asset(
+                                    "assets/imagens/Quadra.jpg",
                                     fit: BoxFit.cover,
-                                    height: 100.0,),
+                                    height: 100.0,
+                                  ),
                                 ),
                                 Row(
                                   children: [
@@ -67,7 +113,7 @@ class _ApostasState extends State<Apostas> {
                                           height: 85,
                                           width: 85,
                                           child: Image.asset(
-                                            "assets/imagens/times/nba/Atlanta-Hawks.png",
+                                            '${logos[index * 2]}',
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -75,7 +121,7 @@ class _ApostasState extends State<Apostas> {
                                           height: 85,
                                           width: 85,
                                           child: Image.asset(
-                                            "assets/imagens/times/nba/Denver-Nuggets.png",
+                                            '${logos[index * 2 + 1]}',
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -89,14 +135,14 @@ class _ApostasState extends State<Apostas> {
                                             CrossAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Atlanta Hawks\nx Denver Nuggets",
+                                            "${nomes[index * 2]}\nx ${nomes[index * 2 + 1]}",
                                             style: TextStyle(fontSize: 18.0),
                                             textAlign: TextAlign.center,
                                           ),
                                           Divider(
                                             color: Colors.transparent,
                                           ),
-                                          Text("H: 0.8 | E: 0.1 | A: 0.1",
+                                          Text("H: 80% | E: 0% | A: 20%",
                                               style: TextStyle())
                                         ],
                                       ),
@@ -104,8 +150,7 @@ class _ApostasState extends State<Apostas> {
                                   ],
                                 )
                               ],
-                            )))
-                  ],
+                            ))
                 );
               }),
         ));
