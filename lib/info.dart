@@ -6,13 +6,15 @@ class TeamData {
   static List<String> nomes;
   static List<String> logos;
   static int ind = 0;
+  static String liga = 'nba';
+  static String esporte = 'basquete';
 
-  static void getLogos() async {
+  static void getLogos(){
     for (int i = 0; i < size; i++) {
       Firestore.instance
           .collection('esportes')
-          .document('basquete')
-          .collection('nba')
+          .document(esporte)
+          .collection(liga)
           .where('nome', isEqualTo: nomes[i])
           .snapshots()
           .listen((event) {
@@ -24,8 +26,8 @@ class TeamData {
   static void getNames() async {
     Firestore.instance
         .collection("esportes")
-        .document("basquete")
-        .collection("nba")
+        .document(esporte)
+        .collection(liga)
         .document("partidas")
         .snapshots()
         .listen((event) {

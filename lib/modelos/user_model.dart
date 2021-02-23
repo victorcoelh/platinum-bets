@@ -25,8 +25,6 @@ class UserModel extends Model{
     _auth.signInWithEmailAndPassword(email: email, password: pass).then(
          (user)async{
            firebaseUser = user;
-           TeamData.getNames();
-           TeamData.getLogos();
 
            await _loadCurrentUser();
            onSuccess();

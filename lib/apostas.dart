@@ -11,26 +11,29 @@ class Apostas extends StatefulWidget {
 }
 
 class _ApostasState extends State<Apostas> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          /*leading: IconButton(
+      appBar: AppBar(
+        /*leading: IconButton(
           icon: Icon(Icons.menu, size: 32,),
           onPressed: () {},
         ),*/
-          title: Text("Apostas"),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.refresh, size: 32),
-              onPressed: () {},
-            ),
-          ],
-        ),
-        drawer: Sidebar(),
-        body: Container(
+        title: Text("Apostas"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh, size: 32),
+            onPressed: () {
+              setState(() {
+
+              });
+            },
+          ),
+        ],
+      ),
+      drawer: Sidebar(),
+      body: Container(
           color: Colors.blueGrey[900],
           height: double.infinity,
           width: double.infinity,
@@ -56,6 +59,7 @@ class _ApostasState extends State<Apostas> {
                         );
                       },
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Stack(
                             children: [
@@ -91,7 +95,8 @@ class _ApostasState extends State<Apostas> {
                             ],
                           ),
                           //Padding(padding: EdgeInsets.only(left: 0.0)),
-                          Expanded(child: Row(
+                          Expanded(
+                              child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
@@ -114,11 +119,11 @@ class _ApostasState extends State<Apostas> {
                                 ),
                               )
                             ],
-                          )
-                          )],
+                          ))
+                        ],
                       ),
                     ));
-              }),
-        ));
+              })),
+    );
   }
 }

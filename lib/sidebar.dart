@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'apostas.dart';
 import 'modelos/user_model.dart';
+import 'info.dart';
 
 class Sidebar extends StatefulWidget {
   @override
@@ -14,8 +15,14 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   final int _options = 4;
-  List<String> _sideOptions = ["Adicionar Fundos", "Configurações", "Ajuda", "Esportes"];
+  List<String> _sideOptions = [
+    "Adicionar Fundos",
+    "Configurações",
+    "Ajuda",
+    "Esportes"
+  ];
   TextStyle tligas = TextStyle(fontSize: 16.0);
+  TextEditingController quantia = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +102,7 @@ class _SidebarState extends State<Sidebar> {
                 child: ListView.builder(
                     itemCount: _options,
                     itemBuilder: (context, index) {
-                      return _listBuild(index);
+                      return _listBuild(index, model);
                     })),
             Divider(color: Colors.grey[700]),
             Row(
@@ -144,7 +151,7 @@ class _SidebarState extends State<Sidebar> {
     });
   }
 
-  Widget _listBuild(int index) {
+  Widget _listBuild(int index, UserModel mod) {
     bool initial = (index == 3);
     IconButton icon = IconButton(
         icon: Icon(
@@ -154,49 +161,116 @@ class _SidebarState extends State<Sidebar> {
         ),
         onPressed: null);
 
-    if (initial) {
-      return ListTile(
-        contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
-        title: ExpandablePanel(
-          header: Text(
-            "Ligas",
-            style: TextStyle(fontSize: 20.0),
-          ),
-          collapsed: Container(),
-          expanded: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              FlatButton(
-                child: Text(
-                  "Brasileirão Série A",
-                  style: tligas,
-                  textAlign: TextAlign.start,
+    switch (index) {
+      case 3:
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
+          title: ExpandablePanel(
+            header: Text(
+              "Ligas",
+              style: TextStyle(fontSize: 20.0),
+            ),
+            collapsed: Container(),
+            expanded: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                FlatButton(
+                  child: Text(
+                    "Brasileirão Série A",
+                    style: tligas,
+                    textAlign: TextAlign.start,
+                  ),
+                  onPressed: () {
+                    TeamData.esporte = 'futebol';
+                    TeamData.liga = 'brSerieA';
+                    TeamData.getNames();
+                    TeamData.getLogos();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Apostas()));
+                  },
                 ),
-                onPressed: () {},
-              ),
-              FlatButton(
-                child: Text("Premier League",
-                    style: tligas, textAlign: TextAlign.start),
-                onPressed: () {},
-              ),
-              FlatButton(
-                child: Text("NBA", style: tligas, textAlign: TextAlign.start),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Apostas()));
-                },
-              )
-            ],
+                FlatButton(
+                  child: Text("Premier League",
+                      style: tligas, textAlign: TextAlign.start),
+                  onPressed: () {
+                    TeamData.esporte = 'futebol';
+                    TeamData.liga = 'premierLeague';
+                    TeamData.getNames();
+                    TeamData.getLogos();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Apostas()));
+                  },
+                ),
+                FlatButton(
+                  child: Text("NBA", style: tligas, textAlign: TextAlign.start),
+                  onPressed: () {
+                    TeamData.esporte = 'basquete';
+                    TeamData.liga = 'nba';
+                    TeamData.getNames();
+                    TeamData.getLogos();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Apostas()));
+                  },
+                )
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      case 0:
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
+          leading: FlatButton(
+            padding: EdgeInsets.zero,
+            child: Text(
+              "Adicionar Fundos",
+              style: TextStyle(fontSize: 20.0),
+              textAlign: TextAlign.start,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Insira a quantia a ser adicionada"),
+                      content: TextField(
+                        controller: quantia,
+                        decoration: InputDecoration(prefixText: "R\$"),
+                      ),
+                      actions: [
+                        FlatButton(
+                          child: Text(
+                            "Cancelar",
+                            style: TextStyle(color: Colors.blue[800]),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(
+                            "Confirmar",
+                            style: TextStyle(color: Colors.blue[800]),
+                          ),
+                          onPressed: () {
+                            Firestore.instance
+                                .collection('users')
+                                .document(mod.firebaseUser.uid)
+                                .updateData({'saldo': mod.userData['saldo'] + int.parse(quantia.text)});
+                            mod.DataUpdate();
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    );
+                  });
+            },
+          ),
+        );
+      default:
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
+          title: Text(_sideOptions[index], style: TextStyle(fontSize: 20.0)),
+        );
     }
-    return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
-      title: Text(
-        _sideOptions[index],
-        style: TextStyle(fontSize: 20.0),
-      ),
-    );
   }
 }

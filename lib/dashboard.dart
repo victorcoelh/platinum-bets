@@ -232,6 +232,7 @@ class _DashboardState extends State<Dashboard> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
                                 itemCount: snapshot.data.documents.length,
                                 padding:
                                     EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
