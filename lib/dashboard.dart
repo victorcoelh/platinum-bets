@@ -3,6 +3,9 @@ import 'package:platinumbetss/sidebar.dart';
 import 'package:platinumbetss/favoritos.dart';
 import 'ultimas.dart';
 import 'apostas.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'modelos/user_model.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -36,7 +39,22 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+      if (model.Isloading)
+        return Stack(
+          children: [
+            Image.asset(
+              "assets/imagens/FundoLogin.jpg",
+              fit: BoxFit.cover,
+              height: 1000.0,
+            ),
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ],
+        );
+
+      return Scaffold(
       appBar: AppBar(
         /*leading: IconButton(
           icon: Icon(Icons.menu, size: 32,),
@@ -47,7 +65,16 @@ class _DashboardState extends State<Dashboard> {
         actions: [
           IconButton(
             icon: Icon(Icons.refresh, size: 32),
-            onPressed: () {},
+            onPressed: () {
+              Firestore.instance
+                  .collection('esportes')
+                  .document('basquete')
+                  .collection('nba')
+                  .document('atlhawks')
+                  .updateData({'nextMatch': 'Cleveland Cavaliers'});
+
+              model.DataUpdate();
+            },
           ),
         ],
       ),
@@ -186,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ],
         ),
-      ),
-    );
+      ));
+    });
   }
 }

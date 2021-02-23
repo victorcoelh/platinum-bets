@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:icon_shadow/icon_shadow.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:platinumbetss/modelos/user_model.dart';
 
 class ApostaAberta extends StatefulWidget {
   @override
@@ -12,67 +13,83 @@ class _ApostaAbertaState extends State<ApostaAberta> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      actionsPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 38.0),
-      titlePadding: EdgeInsets.zero,
-      title: Container(
-          color: Colors.blue[800],
-          width: 300.0,
-          height: 160.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SizedBox(
-                height: 110,
-                width: 110,
-                child: Image.asset(
-                  "assets/imagens/times/nba/Atlanta-Hawks.png",
-                  fit: BoxFit.fill,
-                ),
-              ),
-              SizedBox(
-                height: 110,
-                width: 110,
-                child: Image.asset(
-                  "assets/imagens/times/nba/Denver-Nuggets.png",
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ],
-          )),
-      content: SizedBox(
-        height: 125.0,
-        width: 300.0,
-        child: Column(
+    return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+      if (model.Isloading)
+        return Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 50.0),
-              child: Text(
-                "ODDS",
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-              ),
+            Image.asset(
+              "assets/imagens/FundoLogin.jpg",
+              fit: BoxFit.cover,
+              height: 1000.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("0.4", style: estilot),
-                Text("0.2", style: estilot),
-                Text("0.4", style: estilot)
-              ],
+            Center(
+              child: CircularProgressIndicator(),
             )
           ],
-        ),
-      ),
-      actions: [
-        FlatButton(
-            onPressed: () {},
-            child: Text(
-              "Casa",
-              style: estilob,
+        );
+
+      return AlertDialog(
+        actionsPadding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 38.0),
+        titlePadding: EdgeInsets.zero,
+        title: Container(
+            color: Colors.blue[800],
+            width: 300.0,
+            height: 160.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  height: 110,
+                  width: 110,
+                  child: Image.asset(
+                    "assets/imagens/times/nba/Atlanta-Hawks.png",
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                SizedBox(
+                  height: 110,
+                  width: 110,
+                  child: Image.asset(
+                    "assets/imagens/times/nba/Denver-Nuggets.png",
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ],
             )),
-        FlatButton(onPressed: () {}, child: Text("Empate", style: estilob)),
-        FlatButton(onPressed: () {}, child: Text("Fora", style: estilob))
-      ],
-    );
+        content: SizedBox(
+          height: 125.0,
+          width: 300.0,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 50.0),
+                child: Text(
+                  "ODDS",
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("0.4", style: estilot),
+                  Text("0.2", style: estilot),
+                  Text("0.4", style: estilot)
+                ],
+              )
+            ],
+          ),
+        ),
+        actions: [
+          FlatButton(
+              onPressed: () {},
+              child: Text(
+                "Casa",
+                style: estilob,
+              )),
+          FlatButton(onPressed: () {}, child: Text("Empate", style: estilob)),
+          FlatButton(onPressed: () {}, child: Text("Fora", style: estilob))
+        ],
+      );
+    });
   }
 }

@@ -88,6 +88,10 @@ class UserModel extends Model{
     return firebaseUser != null;
   }
 
+  void DataUpdate() async{
+    DocumentSnapshot docUser = await Firestore.instance.collection("users").document(firebaseUser.uid).get();
+    userData = docUser.data;
+  }
 
   Future<Null> _saveUserData(Map<String,dynamic> userData) async{
     this.userData = userData;
@@ -98,11 +102,9 @@ class UserModel extends Model{
     if(firebaseUser == null)
       firebaseUser = await _auth.currentUser();
     if(firebaseUser != null){
-      if(userData["nome"] == null){
         DocumentSnapshot docUser =
         await Firestore.instance.collection("users").document(firebaseUser.uid).get();
       userData = docUser.data;
-    }
   }
   }
     notifyListeners();
