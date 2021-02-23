@@ -17,7 +17,6 @@ class TeamData {
           .snapshots()
           .listen((event) {
         logos[i] = event.documents[0]['logo'];
-        print(logos[i]);
       });
     }
   }
@@ -35,7 +34,6 @@ class TeamData {
       logos = new List<String>(size);
       for(int i = 0; i < size; i++){
         nomes[i] = event['confrontos'][i];
-        print(nomes[i]);
       }
     });
   }

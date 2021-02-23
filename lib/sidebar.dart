@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
-
+import 'apostas.dart';
 import 'modelos/user_model.dart';
 
 class Sidebar extends StatefulWidget {
@@ -14,14 +14,8 @@ class Sidebar extends StatefulWidget {
 
 class _SidebarState extends State<Sidebar> {
   final int _options = 4;
-  List<String> _sideOptions = [
-    "Conta",
-    "Configurações",
-    "Ajuda",
-    "Esportes"
-  ];
+  List<String> _sideOptions = ["Adicionar Fundos", "Configurações", "Ajuda", "Esportes"];
   TextStyle tligas = TextStyle(fontSize: 16.0);
-
 
   @override
   Widget build(BuildContext context) {
@@ -160,28 +154,36 @@ class _SidebarState extends State<Sidebar> {
         ),
         onPressed: null);
 
-    if (initial){
+    if (initial) {
       return ListTile(
         contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
         title: ExpandablePanel(
-          header: Text("Ligas", style: TextStyle(fontSize: 20.0),),
+          header: Text(
+            "Ligas",
+            style: TextStyle(fontSize: 20.0),
+          ),
           collapsed: Container(),
           expanded: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               FlatButton(
-                child: Text("Brasileirão Série A", style: tligas, textAlign: TextAlign.start,),
-                onPressed: () {
-                },
+                child: Text(
+                  "Brasileirão Série A",
+                  style: tligas,
+                  textAlign: TextAlign.start,
+                ),
+                onPressed: () {},
               ),
               FlatButton(
-                child: Text("Premier League", style: tligas, textAlign: TextAlign.start),
-                onPressed: () {
-                },
+                child: Text("Premier League",
+                    style: tligas, textAlign: TextAlign.start),
+                onPressed: () {},
               ),
               FlatButton(
                 child: Text("NBA", style: tligas, textAlign: TextAlign.start),
                 onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Apostas()));
                 },
               )
             ],
