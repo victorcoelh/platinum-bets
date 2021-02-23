@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:platinumbetss/modelos/user_model.dart';
+import 'info.dart';
 
 class ApostaAberta extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _ApostaAbertaState extends State<ApostaAberta> {
                   height: 110,
                   width: 110,
                   child: Image.asset(
-                    "assets/imagens/times/nba/Atlanta-Hawks.png",
+                    "${TeamData.logos[TeamData.ind * 2]}",
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -50,7 +51,7 @@ class _ApostaAbertaState extends State<ApostaAberta> {
                   height: 110,
                   width: 110,
                   child: Image.asset(
-                    "assets/imagens/times/nba/Denver-Nuggets.png",
+                    "${TeamData.logos[TeamData.ind * 2 + 1]}",
                     fit: BoxFit.fill,
                   ),
                 ),
