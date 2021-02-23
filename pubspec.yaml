@@ -65,10 +65,39 @@ flutter:
     - assets/imagens/comemorar.jpg
     - assets/imagens/FundoLogin.jpg
     - assets/imagens/Gigachad.jpg
-    - assets/imagens/times/nba/Atlanta-Hawks.png
-    - assets/imagens/times/nba/Denver-Nuggets.png
     - assets/imagens/Quadra.jpg
     - assets/imagens/DegradePerfil.png
+    # NBA Logos
+    - assets/imagens/times/nba/Atlanta-Hawks.png
+    - assets/imagens/times/nba/Boston-Celtics.png
+    - assets/imagens/times/nba/Brooklyn-Nets.png
+    - assets/imagens/times/nba/Charlotte-Hornets.png
+    - assets/imagens/times/nba/Chicago-Bulls.png
+    - assets/imagens/times/nba/Cleveland-Cavaliers.png
+    - assets/imagens/times/nba/Dallas-Mavericks.png
+    - assets/imagens/times/nba/Denver-Nuggets.png
+    - assets/imagens/times/nba/Detroit-Pistons.png
+    - assets/imagens/times/nba/Golden-State-Warriors.png
+    - assets/imagens/times/nba/Houston-Rockets.png
+    - assets/imagens/times/nba/Indiana-Pacers.png
+    - assets/imagens/times/nba/Los-Angeles-Clippers.png
+    - assets/imagens/times/nba/Los-Angeles-Lakers.png
+    - assets/imagens/times/nba/Memphis-Grizzlies.png
+    - assets/imagens/times/nba/Miami-Heat.png
+    - assets/imagens/times/nba/Milwaukee-Bucks.png
+    - assets/imagens/times/nba/Minnesota-Timberwolves.png
+    - assets/imagens/times/nba/New-Orleans-Pelicans.png
+    - assets/imagens/times/nba/New-York-Knicks.png
+    - assets/imagens/times/nba/Oklahoma-City-Thunder.png
+    - assets/imagens/times/nba/Orlando-Magic.png
+    - assets/imagens/times/nba/Philadelphia-76ers.png
+    - assets/imagens/times/nba/Phoenix-Suns.png
+    - assets/imagens/times/nba/Portland-Trail-Blazers.png
+    - assets/imagens/times/nba/Sacramento-Kings.png
+    - assets/imagens/times/nba/San-Antonio-Spurs.png
+    - assets/imagens/times/nba/Toronto-Raptors.png
+    - assets/imagens/times/nba/Utah-Jazz.png
+    - assets/imagens/times/nba/Washington-Wizards.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

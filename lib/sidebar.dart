@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:platinumbetss/tela.login.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'modelos/user_model.dart';
 
@@ -19,118 +21,133 @@ class _SidebarState extends State<Sidebar> {
     "Ajuda"
   ];
 
+
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(0),
-      color: Colors.white,
-      width: 350.0,
-      height: double.infinity,
-      child: Drawer(
-          child: Column(
-        children: [
-          SizedBox(
-              height: 250.0,
-              child: Stack(
+    return ScopedModelDescendant<UserModel>(builder: (context, child, model) {
+      if (model.Isloading)
+        return Stack(
+          children: [
+            Image.asset(
+              "assets/imagens/FundoLogin.jpg",
+              fit: BoxFit.cover,
+              height: 1000.0,
+            ),
+            Center(
+              child: CircularProgressIndicator(),
+            )
+          ],
+        );
+
+      return Container(
+        padding: EdgeInsets.all(0),
+        color: Colors.white,
+        width: 350.0,
+        height: double.infinity,
+        child: Drawer(
+            child: Column(
+          children: [
+            SizedBox(
+                height: 250.0,
+                child: Stack(
+                  children: [
+                    Image.asset(
+                      "assets/imagens/Gigachad.jpg",
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      alignment: Alignment.topCenter,
+                    ),
+                    Image.asset(
+                      "assets/imagens/DegradePerfil.png",
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      alignment: Alignment.topCenter,
+                    ),
+                  ],
+                )),
+            Container(
+              height: 40.0,
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    "assets/imagens/Gigachad.jpg",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    alignment: Alignment.topCenter,
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.0),
+                    child: Text(
+                      "${model.userData['nome']}",
+                      style: TextStyle(color: Colors.white, fontSize: 21.0),
+                    ),
                   ),
-                  Image.asset(
-                    "assets/imagens/DegradePerfil.png",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    alignment: Alignment.topCenter,
+                  Padding(
+                    padding: EdgeInsets.only(right: 30.0),
+                    child: Text(
+                      "R\$${model.userData['saldo']}",
+                      style: TextStyle(color: Colors.white, fontSize: 21.0),
+                    ),
                   ),
                 ],
-              )),
-          Container(
-            height: 40.0,
-            width: double.infinity,
-            child: Row(
+              ),
+              decoration: BoxDecoration(color: Colors.teal, boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(0.6),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(-2, 2))
+              ]),
+            ),
+            Container(
+                height: 420.0,
+                child: ListView.builder(
+                    itemCount: _options,
+                    itemBuilder: (context, index) {
+                      return _listBuild(index);
+                    })),
+            Divider(color: Colors.grey[700]),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 30.0),
-                  child: Text(
-                    "Victor",
-                    style: TextStyle(color: Colors.white, fontSize: 21.0),
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: ScopedModelDescendant<UserModel>(
+                    builder: (context, child, model) {
+                      return Row(
+                        children: [
+                          IconButton(
+                              icon: Icon(Icons.logout),
+                              onPressed: () {
+                                model.Sair();
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TelaLogin()));
+                              }),
+                          FlatButton(
+                              child: Text(
+                                "Logout",
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                              onPressed: () {
+                                model.Sair();
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TelaLogin()));
+                              }),
+                        ],
+                      );
+                    },
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 30.0),
-                  child: Text(
-                    "R\$50",
-                    style: TextStyle(color: Colors.white, fontSize: 21.0),
-                  ),
-                ),
+                  padding: EdgeInsets.only(right: 14.0),
+                  child: Text("versão 0.1",
+                      style: TextStyle(color: Colors.grey, fontSize: 14.0)),
+                )
               ],
-            ),
-            decoration: BoxDecoration(color: Colors.teal, boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(0.6),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(-2, 2))
-            ]),
-          ),
-          Container(
-              height: 420.0,
-              child: ListView.builder(
-                  itemCount: _options,
-                  itemBuilder: (context, index) {
-                    return _listBuild(index);
-                  })),
-          Divider(color: Colors.grey[700]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: ScopedModelDescendant<UserModel>(
-                  builder: (context, child, model){
-                    return Row(
-                      children: [
-                        IconButton(icon: Icon(Icons.logout), onPressed:(){
-                          model.Sair();
-
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context)=>TelaLogin())
-                          );
-                        }),
-                        FlatButton(
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                            onPressed:(){
-                              model.Sair();
-
-
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context)=>TelaLogin())
-                              );
-                            }
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(right: 14.0),
-                child: Text("versão 0.1",
-                    style: TextStyle(color: Colors.grey, fontSize: 14.0)),
-              )
-            ],
-          )
-        ],
-      )),
-    );
+            )
+          ],
+        )),
+      );
+    });
   }
 
   Widget _listBuild(int index) {

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:platinumbetss/modelos/user_model.dart';
@@ -317,8 +315,9 @@ class _TelaCadastroState extends State<TelaCadastro> {
                                   "email" : _emailController.text,
                                   "sobrenome" : _sobrenomeController.text,
                                   "cpf" : _cpfController.text,
-
-
+                                  "saldo" : 0,
+                                  "favoritos" : {},
+                                  "ultimas" : {}
 
                                 };
                                 model.Cadastrar(
