@@ -147,7 +147,6 @@ class _RecuperacaoSenhaState extends State<RecuperacaoSenha> {
                               Navigator.of(context).push(
                                   MaterialPageRoute(builder: (context)=>RegistroFinal())
                               );
-
                             };
                           },
                           color: Colors.blue[800],
