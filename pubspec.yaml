@@ -119,6 +119,26 @@ flutter:
     - assets/imagens/times/brSerieA/Sao-Paulo.png
     - assets/imagens/times/brSerieA/Sport-Recife.png
     - assets/imagens/times/brSerieA/Vasco-da-Gama.png
+    - assets/imagens/times/PremierLeague/Arsenal.png
+    - assets/imagens/times/PremierLeague/Aston-Villa.png
+    - assets/imagens/times/PremierLeague/Brighton.png
+    - assets/imagens/times/PremierLeague/Burnley.png
+    - assets/imagens/times/PremierLeague/Chelsea.png
+    - assets/imagens/times/PremierLeague/Crystal-Palace.png
+    - assets/imagens/times/PremierLeague/Everton.png
+    - assets/imagens/times/PremierLeague/Fulham.png
+    - assets/imagens/times/PremierLeague/Leeds.png
+    - assets/imagens/times/PremierLeague/Leicester-City.png
+    - assets/imagens/times/PremierLeague/Liverpool.png
+    - assets/imagens/times/PremierLeague/Manchester-City.png
+    - assets/imagens/times/PremierLeague/Manchester-United.png
+    - assets/imagens/times/PremierLeague/Newcastle.png
+    - assets/imagens/times/PremierLeague/Sheffield-United.png
+    - assets/imagens/times/PremierLeague/Southampton.png
+    - assets/imagens/times/PremierLeague/Tottenham.png
+    - assets/imagens/times/PremierLeague/West-Bromwich.png
+    - assets/imagens/times/PremierLeague/West-Ham.png
+    - assets/imagens/times/PremierLeague/Wolves.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

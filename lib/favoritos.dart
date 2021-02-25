@@ -11,6 +11,7 @@ class Favoritos extends StatefulWidget {
 }
 
 class _FavoritosState extends State<Favoritos> {
+  String dropdownValue = 'Brasileirão';
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +108,6 @@ class _FavoritosState extends State<Favoritos> {
     });
   }
 
-  String dropdownValue = 'Brasileirão';
-
   Widget _addTeam(String id) {
     String liga;
     String esporte;
@@ -132,17 +131,6 @@ class _FavoritosState extends State<Favoritos> {
                   setState(() {
                     dropdownValue = newValue;
                   });
-                  if (dropdownValue != 'NBA') {
-                    esporte = 'futebol';
-                    if (dropdownValue != 'Premier League') {
-                      liga = 'brSerieA';
-                    } else {
-                      liga = 'premierLeague';
-                    }
-                  } else {
-                    esporte = 'basquete';
-                    liga = 'nba';
-                  }
                 },
                 items: <String>['Brasileirão', 'Premier League', 'NBA']
                     .map<DropdownMenuItem<String>>((String value) {
@@ -164,6 +152,17 @@ class _FavoritosState extends State<Favoritos> {
         actions: [
           FlatButton(
               onPressed: () {
+                if (dropdownValue != 'NBA') {
+                  esporte = 'futebol';
+                  if (dropdownValue != 'Premier League') {
+                    liga = 'brSerieA';
+                  } else {
+                    liga = 'premierLeague';
+                  }
+                } else {
+                  esporte = 'basquete';
+                  liga = 'nba';
+                }
                 _addT(teamController.text, liga, esporte, id);
                 Navigator.pop(context);
               },

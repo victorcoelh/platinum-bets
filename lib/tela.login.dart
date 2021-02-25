@@ -159,16 +159,14 @@ class _TelaLoginState extends State<TelaLogin> {
                       height: 10.0,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
                           " Lembrar usuário",
                           style: TextStyle(
                               color: Colors.white70,
-                              fontSize: 15.0
+                              fontSize: 14.0
                           ),
-                        ),
-                        SizedBox(
-                          width: 20.0,
                         ),
                         FlatButton(
 
@@ -177,7 +175,7 @@ class _TelaLoginState extends State<TelaLogin> {
                             "Esqueceu sua senha?",
                             textAlign: TextAlign.right,
                             style: TextStyle(color: Colors.white60,
-                                fontSize: 15.0),
+                                fontSize: 14.0),
 
                           ),
                           onPressed: (){
