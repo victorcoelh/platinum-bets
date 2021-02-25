@@ -274,8 +274,12 @@ class _SidebarState extends State<Sidebar> {
                               'saldo': mod.userData['saldo'] +
                                   int.parse(quantia.text)
                             });
+
                             mod.DataUpdate();
+
                             Navigator.pop(context);
+
+
                           },
                         )
                       ],

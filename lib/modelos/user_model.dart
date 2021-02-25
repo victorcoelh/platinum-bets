@@ -11,8 +11,10 @@ import 'package:platinumbetss/info.dart';
 
 class UserModel extends Model{
 
+  Firestore col = Firestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
+
   Map<String, dynamic> userData = Map();
 
   bool Isloading = false;
@@ -53,6 +55,7 @@ class UserModel extends Model{
 
 
          await _saveUserData(userData);
+
 
           onSuccess();
           Isloading = false;

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:platinumbetss/sidebar.dart';
 import 'package:platinumbetss/favoritos.dart';
@@ -20,6 +21,8 @@ class _DashboardState extends State<Dashboard> {
   QuerySnapshot time2;
   String filtro1;
   String filtro2;
+
+
 
   void getTeams(String filtro1, String filtro2) async {
     Firestore.instance
@@ -108,7 +111,7 @@ class _DashboardState extends State<Dashboard> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Bem-vindo\nnovamente,\nusuário",
+                          "Bem-vindo\nnovamente,\n${model.userData["nome"]}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.white,

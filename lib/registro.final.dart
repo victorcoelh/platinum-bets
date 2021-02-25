@@ -35,7 +35,7 @@ class _RegistroFinalState extends State<RegistroFinal> {
               ),
               Container(
                 child: Text(
-                  "Quase lá",
+                  "Pronto",
                   style: TextStyle(color: Colors.white,
                       fontSize: 23.0),
 
@@ -46,7 +46,7 @@ class _RegistroFinalState extends State<RegistroFinal> {
               ),
               Container(
                 child: Text(
-                    "Confirme seu e-mail para poder fazer login no app",
+                    "Vá para a tela de login para entrar",
                     style: TextStyle(color: Colors.white60,
                         fontSize: 17.0)
                 ),
