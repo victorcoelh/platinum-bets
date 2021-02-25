@@ -18,12 +18,14 @@ class _TelaLoginState extends State<TelaLogin> {
 
   final _formKey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
         builder: (context,child,model){
+
           if(model.Isloading)
             return Stack(
               children: [
@@ -161,12 +163,8 @@ class _TelaLoginState extends State<TelaLogin> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          " Lembrar usuário",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 14.0
-                          ),
+                        SizedBox(
+                          width: 130.0,
                         ),
                         FlatButton(
 
@@ -297,6 +295,7 @@ class _TelaLoginState extends State<TelaLogin> {
         SnackBar(content: Text("Falha ao entrar em sua conta!"),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
+
         ));
   }
 }
