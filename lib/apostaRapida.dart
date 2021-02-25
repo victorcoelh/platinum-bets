@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:platinumbetss/apostaAberta.dart';
+import 'info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ApostaRapida extends StatefulWidget {
   @override
@@ -30,6 +33,20 @@ class _ApostaRapidaState extends State<ApostaRapida> {
                   setState(() {
                     dropdownValue = newValue;
                   });
+                  if (dropdownValue != 'NBA') {
+                    if (dropdownValue != 'Brasileirão') {
+                      TeamData.liga = 'premierLeague';
+                      TeamData.esporte = 'futebol';
+                    } else {
+                      TeamData.liga = 'brSerieA';
+                      TeamData.esporte = 'futebol';
+                    }
+                  } else {
+                    TeamData.liga = 'nba';
+                    TeamData.esporte = 'basquete';
+                  }
+                  TeamData.getNames();
+                  TeamData.getLogos();
                 },
                 items: <String>['Brasileirão', 'Premier League', 'NBA']
                     .map<DropdownMenuItem<String>>((String value) {
@@ -48,6 +65,55 @@ class _ApostaRapidaState extends State<ApostaRapida> {
             ],
           ),
         ),
-        actions: [FlatButton(onPressed: () {}, child: Text("Confirmar"))]);
+        actions: [
+          FlatButton(
+              onPressed: () {
+                if (dropdownValue != 'NBA') {
+                  if (dropdownValue != 'Brasileirão') {
+                    TeamData.liga = 'premierLeague';
+                    TeamData.esporte = 'futebol';
+                  } else {
+                    TeamData.liga = 'brSerieA';
+                    TeamData.esporte = 'futebol';
+                  }
+                } else {
+                  TeamData.liga = 'nba';
+                  TeamData.esporte = 'basquete';
+                }
+                TeamData.getNames();
+                TeamData.getLogos();
+                if(TeamData.nomes.contains(teamController.text)){
+                  TeamData.ind = (TeamData.nomes.indexOf(teamController.text) / 2).floor();
+                  print(teamController.text);
+                  print(TeamData.nomes);
+                  showDialog(context: context,
+                  builder: (BuildContext context) {
+                    return ApostaAberta();
+                  });
+                } else {
+                  print(teamController.text);
+                  print(TeamData.nomes);
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Esse time não irá jogar na próxima rodada!"),
+                          actions: [
+                            FlatButton(
+                              child: Text(
+                                "Ok",
+                                style: TextStyle(color: Colors.blue[800]),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      });
+                }
+              },
+              child: Text("Confirmar"))
+        ]);
   }
 }

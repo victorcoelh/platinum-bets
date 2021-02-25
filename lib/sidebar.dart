@@ -7,6 +7,7 @@ import 'package:expandable/expandable.dart';
 import 'apostas.dart';
 import 'modelos/user_model.dart';
 import 'info.dart';
+import 'dashboard.dart';
 
 class Sidebar extends StatefulWidget {
   @override
@@ -218,6 +219,20 @@ class _SidebarState extends State<Sidebar> {
         );
       case 0:
         return ListTile(
+            contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
+            leading: FlatButton(
+                padding: EdgeInsets.zero,
+                child: Text(
+                  "Dashboard",
+                  style: TextStyle(fontSize: 20.0),
+                  textAlign: TextAlign.start,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Dashboard()));
+                }));
+      case 1:
+        return ListTile(
           contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 20.0, 0.0),
           leading: FlatButton(
             padding: EdgeInsets.zero,
@@ -255,11 +270,52 @@ class _SidebarState extends State<Sidebar> {
                             Firestore.instance
                                 .collection('users')
                                 .document(mod.firebaseUser.uid)
-                                .updateData({'saldo': mod.userData['saldo'] + int.parse(quantia.text)});
+                                .updateData({
+                              'saldo': mod.userData['saldo'] +
+                                  int.parse(quantia.text)
+                            });
                             mod.DataUpdate();
                             Navigator.pop(context);
                           },
                         )
+                      ],
+                    );
+                  });
+            },
+          ),
+        );
+      case 2:
+        return ListTile(
+          contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 20.0, 10.0),
+          leading: FlatButton(
+            padding: EdgeInsets.zero,
+            child: Text(
+              "Ajuda",
+              style: TextStyle(fontSize: 20.0),
+              textAlign: TextAlign.start,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Contato"),
+                      content: Text(
+                        "E-mail: platinumbets11@gmail.com\nTelefone: (85)992256637",
+                        style: TextStyle(
+                          fontSize: 16.0
+                        ),
+                      ),
+                      actions: [
+                        FlatButton(
+                          child: Text(
+                            "Ok",
+                            style: TextStyle(color: Colors.blue[800]),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
                       ],
                     );
                   });
